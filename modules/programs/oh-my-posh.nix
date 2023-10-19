@@ -70,6 +70,14 @@ in {
         Whether to enable Fish integration.
       '';
     };
+
+    enableNushellIntegration = mkOption {
+      type = types.bool;
+      default = true;
+      description = ''
+        Whether to enable Nushell integration.
+      '';
+    };
   };
 
   config = mkIf cfg.enable {
@@ -90,5 +98,9 @@ in {
     programs.fish.shellInit = mkIf cfg.enableFishIntegration ''
       ${cfg.package}/bin/oh-my-posh init fish ${configArgument} | source
     '';
+
+    programs.nushell.extraConfig = mkIf cfg.enableNushellIntegration ''
+      ${cfg.package}/bin/oh-my-posh init nu ${configArgument} ; source ~/oh-my-posh.nu
+'';
   };
 }
